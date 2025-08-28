@@ -1,0 +1,63 @@
+{
+  "buildCommand": "pnpm build",
+  "devCommand": "pnpm dev",
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ],
+  "env": {
+    "NEXTAUTH_SECRET": "@nextauth-secret",
+    "NEXTAUTH_URL": "@nextauth-url",
+    "DATABASE_URL": "@database-url",
+    "NEXT_PUBLIC_BASE_URL": "@next-public-base-url",
+    "NEXT_PUBLIC_OPENWEATHER_API_KEY": "@openweather-api-key",
+    "UNSPLASH_ACCESS_KEY": "@unsplash-access-key",
+    "UNSPLASH_APPLICATION_ID": "@unsplash-app-id",
+    "UNSPLASH_SECRET_KEY": "@unsplash-secret",
+    "PEXELS_API_KEY": "@pexels-api-key"
+  },
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!api|_next|_static|favicon.ico).*)",
+      "destination": "/"
+    }
+  ]
+}
