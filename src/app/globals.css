@@ -1,0 +1,365 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Animation utilities */
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.fade-in-0 {
+  animation-name: fadeIn;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(1 0 0); /* #ffffff - Clean white background */
+  --foreground: oklch(0.4 0 0); /* #475569 - Primary text color */
+  --card: oklch(0.97 0 0); /* #f1f5f9 - Card background */
+  --card-foreground: oklch(0.4 0.12 45); /* #b45309 - Golden card text color */
+  --popover: oklch(1 0 0); /* #ffffff - Popover background */
+  --popover-foreground: oklch(0.4 0 0); /* #475569 - Popover text */
+  --primary: oklch(0.45 0.15 45); /* #d97706 - Primary golden */
+  --primary-foreground: oklch(1 0 0); /* #ffffff - Text on primary */
+  --secondary: oklch(0.55 0.12 50); /* #f59e0b - Secondary golden */
+  --secondary-foreground: oklch(1 0 0); /* #ffffff - Text on secondary */
+  --muted: oklch(0.97 0 0); /* #f1f5f9 - Muted background */
+  --muted-foreground: oklch(0.4 0 0); /* #475569 - Muted text */
+  --accent: oklch(0.6 0.12 48); /* #fbbf24 - Golden accent color */
+  --accent-foreground: oklch(0.2 0 0); /* #1f2937 - Dark text on accent */
+  --destructive: oklch(0.5 0.2 15); /* #be123c - Error color */
+  --destructive-foreground: oklch(1 0 0); /* #ffffff - Text on destructive */
+  --border: oklch(0.9 0 0); /* #e5e7eb - Border color */
+  --input: oklch(1 0 0); /* #ffffff - Input background */
+  --ring: oklch(0.45 0.15 45); /* #d97706 - Golden focus ring */
+  --chart-1: oklch(0.55 0.12 50); /* #f59e0b - Chart color 1 */
+  --chart-2: oklch(0.6 0.12 48); /* #fbbf24 - Chart color 2 */
+  --chart-3: oklch(0.45 0.15 45); /* #d97706 - Chart color 3 */
+  --chart-4: oklch(0.4 0.12 45); /* #b45309 - Chart color 4 */
+  --chart-5: oklch(0.35 0.1 42); /* #92400e - Chart color 5 */
+  --radius: 0.5rem;
+  --sidebar: oklch(0.97 0 0); /* #f1f5f9 - Sidebar background */
+  --sidebar-foreground: oklch(0.4 0 0); /* #475569 - Sidebar text */
+  --sidebar-primary: oklch(0.45 0.15 45); /* #d97706 - Sidebar primary */
+  --sidebar-primary-foreground: oklch(1 0 0); /* #ffffff - Sidebar primary text */
+  --sidebar-accent: oklch(0.55 0.12 50); /* #f59e0b - Sidebar accent */
+  --sidebar-accent-foreground: oklch(1 0 0); /* #ffffff - Sidebar accent text */
+  --sidebar-border: oklch(0.9 0 0); /* #e5e7eb - Sidebar border */
+  --sidebar-ring: oklch(0.45 0.15 45); /* #d97706 - Sidebar focus ring */
+  --font-playfair: "Playfair Display", serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+.dark {
+  --background: oklch(0.1 0 0); /* Dark background */
+  --foreground: oklch(0.95 0 0); /* Light text */
+  --card: oklch(0.15 0 0); /* Dark card background */
+  --card-foreground: oklch(0.7 0.12 48); /* Lighter golden for cards */
+  --popover: oklch(0.15 0 0); /* Dark popover */
+  --popover-foreground: oklch(0.95 0 0); /* Light popover text */
+  --primary: oklch(0.65 0.12 48); /* Lighter golden for dark mode */
+  --primary-foreground: oklch(0.1 0 0); /* Dark text on primary */
+  --secondary: oklch(0.25 0 0); /* Dark secondary */
+  --secondary-foreground: oklch(0.95 0 0); /* Light text on secondary */
+  --muted: oklch(0.25 0 0); /* Dark muted */
+  --muted-foreground: oklch(0.7 0 0); /* Muted text */
+  --accent: oklch(0.7 0.12 48); /* Accent golden */
+  --accent-foreground: oklch(0.1 0 0); /* Dark text on accent */
+  --destructive: oklch(0.5 0.2 15); /* Error color */
+  --destructive-foreground: oklch(0.95 0 0); /* Light text on destructive */
+  --border: oklch(0.25 0 0); /* Dark border */
+  --input: oklch(0.25 0 0); /* Dark input */
+  --ring: oklch(0.65 0.12 48); /* Focus ring */
+  --chart-1: oklch(0.65 0.12 48); /* Chart colors for dark mode */
+  --chart-2: oklch(0.7 0.12 50);
+  --chart-3: oklch(0.6 0.15 45);
+  --chart-4: oklch(0.55 0.12 42);
+  --chart-5: oklch(0.5 0.1 40);
+  --sidebar: oklch(0.15 0 0); /* Dark sidebar */
+  --sidebar-foreground: oklch(0.95 0 0); /* Light sidebar text */
+  --sidebar-primary: oklch(0.65 0.12 48); /* Sidebar primary */
+  --sidebar-primary-foreground: oklch(0.1 0 0); /* Dark text on sidebar primary */
+  --sidebar-accent: oklch(0.25 0 0); /* Sidebar accent */
+  --sidebar-accent-foreground: oklch(0.95 0 0); /* Light text on sidebar accent */
+  --sidebar-border: oklch(0.25 0 0); /* Dark sidebar border */
+  --sidebar-ring: oklch(0.65 0.12 48); /* Sidebar focus ring */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-variation-settings: "opsz" auto;
+    background: linear-gradient(
+      -45deg,
+      oklch(0.98 0.02 45) /* Very light golden */,
+      oklch(0.99 0.01 50) /* Almost white with hint of gold */,
+      oklch(0.97 0.03 40) /* Light warm tone */,
+      oklch(0.98 0.02 55) /* Light golden yellow */
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    font-feature-settings: "kern", "liga", "clig", "calt";
+    font-variation-settings: "opsz" auto;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: -0.04em;
+  }
+
+  h2 {
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    letter-spacing: -0.03em;
+  }
+
+  h3 {
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+    letter-spacing: -0.025em;
+  }
+
+  p,
+  span,
+  div {
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 20% 80%, oklch(0.95 0.05 45 / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, oklch(0.96 0.04 50 / 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, oklch(0.94 0.06 40 / 0.12) 0%, transparent 50%);
+    animation: floatingParticles 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 120%;
+    height: 120%;
+    background: linear-gradient(45deg, transparent 30%, oklch(0.98 0.03 48 / 0.05) 50%, transparent 70%);
+    animation: waveMotion 25s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+/* Keyframe animations for background motion effects */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floatingParticles {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.3;
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+    opacity: 0.5;
+  }
+  66% {
+    transform: translateY(10px) rotate(240deg);
+    opacity: 0.4;
+  }
+}
+
+@keyframes waveMotion {
+  0% {
+    transform: translateX(-20%) translateY(-10%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(20%) translateY(10%) rotate(360deg);
+  }
+}
+
+/* Ensuring cards have proper contrast against the new light background */
+.bg-white/95 {
+  background-color: oklch(1 0 0 / 0.98) !important;
+  backdrop-filter: blur(12px);
+}
+
+.bg-white/90 {
+  background-color: oklch(1 0 0 / 0.95) !important;
+  backdrop-filter: blur(8px);
+}
+
+/* Leaflet Map Styles */
+.leaflet-container {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+}
+
+.leaflet-popup-content {
+  margin: 8px 12px !important;
+  line-height: 1.5 !important;
+}
+
+.leaflet-popup-tip {
+  background: white !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: white !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  line-height: 1.5 !important;
+  font-weight: 500 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--muted) !important;
+  color: var(--primary) !important;
+}
+
+/* Dark mode leaflet styles */
+.dark .leaflet-control-zoom a {
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border-color: var(--border) !important;
+}
+
+.dark .leaflet-control-zoom a:hover {
+  background-color: var(--muted) !important;
+}
+
+.dark .leaflet-popup-content-wrapper {
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border-color: var(--border) !important;
+}
+
+.dark .leaflet-popup-tip {
+  background: var(--card) !important;
+}
+
+/* Fix for Leaflet marker icons */
+.leaflet-default-icon-path {
+  background-image: url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png') !important;
+}
+
+.leaflet-default-icon-shadow {
+  background-image: url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png') !important;
+}
