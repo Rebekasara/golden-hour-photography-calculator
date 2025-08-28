@@ -1,69 +1,71 @@
-'use client'
+"use client"
 
-import React, { memo } from 'react'
-import { Sun, MapPin } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { ShareButton } from '@/components/ui/share-button'
-import { LocationDisplayUtils } from '@/lib/location-utils'
-import type { Location, WeatherData, PhotographyConditions } from '@/types'
+import React from "react"
+import { Sun, MapPin, Clock } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import ShareButton from "@/components/share-button"
+import type { LocationData } from "@/lib/location-service"
+import type { WeatherData, PhotographyConditions } from "@/types/weather"
+import { LocationDisplayUtils } from "@/lib/location-display-utils"
 
 interface GoldenHourDisplayProps {
-  nextGoldenHour: string | null
+  nextGoldenHour: string
   nextGoldenHourTime: string
-  nextGoldenHourEndTime?: string
-  nextGoldenHourType: 'morning' | 'evening'
+  nextGoldenHourEndTime: string
+  nextGoldenHourType: string
   nextGoldenHourIsStart: boolean
-  autoLocation: Location | null
-  selectedDate?: string
-  weatherData?: WeatherData | null
-  weatherLoading?: boolean
-  photographyConditions?: PhotographyConditions | null
+  autoLocation: LocationData | null
+  weatherData: WeatherData | null
+  photographyConditions: PhotographyConditions | null
+  weatherLoading: boolean
+  selectedDate?: Date | null // Add selected date for context-aware display
 }
 
-export const GoldenHourDisplay = memo<GoldenHourDisplayProps>(function GoldenHourDisplay({
+export const GoldenHourDisplay = React.memo(function GoldenHourDisplay({
   nextGoldenHour,
   nextGoldenHourTime,
   nextGoldenHourEndTime,
   nextGoldenHourType,
   nextGoldenHourIsStart,
   autoLocation,
-  selectedDate,
   weatherData,
+  photographyConditions,
   weatherLoading,
-  photographyConditions
-}) {
+  selectedDate
+}: GoldenHourDisplayProps) {
+  // Helper function to determine date context
+  const getDateContext = () => {
+    if (!selectedDate) return 'today'
+    
+    const today = new Date()
+    const selected = new Date(selectedDate)
+    const todayStr = today.toDateString()
+    const selectedStr = selected.toDateString()
+    
+    if (selectedStr === todayStr) return 'today'
+    if (selected < today) return 'past'
+    return 'future'
+  }
+  
   // Helper function to get contextual message
   const getContextualMessage = () => {
     const context = getDateContext()
+    const dateStr = selectedDate ? selectedDate.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    }) : 'today'
     
     switch (context) {
       case 'past':
-        return 'Golden Hour'
+        return `Golden hour times for ${dateStr}`
       case 'future':
-        return 'Golden Hour'
+        return `Upcoming golden hour on ${dateStr}`
       case 'today':
       default:
-        if (nextGoldenHourIsStart) {
-          return 'Golden Hour Active'
-        }
-        return 'Next Golden Hour'
+        return nextGoldenHourIsStart ? 'Current Golden Hour' : 'Next Golden Hour'
     }
-  }
-  
-  // Helper function to determine date context
-  const getDateContext = (): 'past' | 'future' | 'today' => {
-    if (!selectedDate) return 'today'
-    
-    const selected = new Date(selectedDate)
-    const today = new Date()
-    
-    // Reset time to compare dates only
-    selected.setHours(0, 0, 0, 0)
-    today.setHours(0, 0, 0, 0)
-    
-    if (selected < today) return 'past'
-    if (selected > today) return 'future'
-    return 'today'
   }
   
   // Helper function to get time display text
